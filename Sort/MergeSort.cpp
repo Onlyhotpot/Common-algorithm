@@ -1,8 +1,33 @@
 #include<iostream>
 void Merge(int*,int,int,int);
+void MergeSort(int*,int,int);
+
+int main()
+{
+    int size;
+    std::cout << "Please input the size of array: " << std::endl;
+    std::cin >> size;
+    std::cout << "Please input the numbers of array: " << std::endl;
+    int *nums = new int(size);
+    for(int i = 0; i < size; i++){
+        std::cin >> nums[i];
+    }
+
+    MergeSort(nums,0,size-1);
+    std::cout << "The array after merge sort is: " << std::endl;
+    for(int i = 0; i < size; i++){
+        std::cout << nums[i] << " ";
+    }
+    std::cout << std::endl;
+
+    delete[] nums;
+    return 0;
+}
+
+
 void MergeSort(int*p,int low,int high)
 {
-	int mid = (low+high)/2;
+	int mid = low + (high - low)/2;
 	if (low <high)
 	{
 		MergeSort(p,low,mid);
@@ -35,10 +60,6 @@ void Merge(int *p,int low,int mid,int high)
 	//将排好序的数组拷贝到原数组
 	for (i = 0;i<high-low+1;i++)
 		p[low+i] = temp[i];
-	//合并过程
-	printf("%d:",mid);
-	for (i = 0;i<high-low+1;i++)
-		printf("%d ",p[low+i]);
-	printf("\n");
+	
 	delete[] temp;
 }
