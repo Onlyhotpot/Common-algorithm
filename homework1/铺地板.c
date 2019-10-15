@@ -1,8 +1,8 @@
 #include<stdio.h>
 #include<time.h>
 
-long long fib(int n);
-
+long long FibByIteration(int n);
+long long FibByRecursion(int n);
 int main()
 {
     printf("Please input n: ");
@@ -10,17 +10,29 @@ int main()
     scanf("%d",&n);
 
     clock_t start_time, end_time;
+    long long res = 0;
+
     start_time = clock();
-    for (int i = 0; i < 10000; ++i)
+    for (int i = 0; i < 1000000; ++i)
     {
-        printf("fib(%d) = %lld\n", n, fib(n));
+        res = FibByIteration(n);
     }
     end_time = clock();
-    printf("Execution time was %lu seconds", (long)(end_time - start_time)/CLOCKS_PER_SEC);
+    printf("FibByIteration(%d) = %lld\n", n, res);
+    printf("Execution time used by FibByIteration(%d) 1000000 times was %lf seconds\n"
+           ,n , (long double)(end_time - start_time)/CLOCKS_PER_SEC);
+
+    res = 0;
+    start_time = clock();
+    res = FibByRecursion(n);
+    end_time = clock();
+    printf("FibByRecursion(%d) = %lld\n", n, res);
+    printf("Execution time used by FibByRecursion(%d) 1 time was %lf seconds\n"
+           ,n , (long double)(end_time - start_time)/CLOCKS_PER_SEC);
     return 0;
 }
 
-long long fib(int n)
+long long FibByIteration(int n)
 {
     long long res = 1;
     long long pre = 1, cul = 1;
@@ -31,4 +43,11 @@ long long fib(int n)
         cul = res;
     }
     return res;
+}
+
+long long FibByRecursion(int n)
+{
+    if(0 == n || 1 == n)
+        return 1;
+    return FibByRecursion(n-1) + FibByRecursion(n-2);
 }
