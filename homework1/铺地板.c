@@ -29,6 +29,7 @@ int main()
     printf("FibByRecursion(%d) = %lld\n", n, res);
     printf("Execution time used by FibByRecursion(%d) 1 time was %lf seconds\n"
            ,n , (long double)(end_time - start_time)/CLOCKS_PER_SEC);
+    system("pause");
     return 0;
 }
 
@@ -47,7 +48,7 @@ long long FibByIteration(int n)
 
 long long FibByRecursion(int n)
 {
-    if(0 == n || 1 == n)
+    if(1 == n || 2 == n)
         return 1;
     return FibByRecursion(n-1) + FibByRecursion(n-2);
 }

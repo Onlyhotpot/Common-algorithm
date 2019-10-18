@@ -15,7 +15,7 @@ int main()
     start_time = clock();
     HanoiTower(n,'A','B','C');
     end_time = clock();
-    printf("Execution time was %lu seconds\n",(long)((end_time - start_time)/CLOCKS_PER_SEC));
+    printf("Execution time was %lf seconds\n",(long double)(1.0*(end_time - start_time)/CLOCKS_PER_SEC));
     system("pause");
     return 0;
 }
