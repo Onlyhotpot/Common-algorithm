@@ -1,8 +1,9 @@
 #include<stdio.h>
 #include<time.h>
 #include<stdlib.h>
+#include<limits.h>
 
-#define NO_MAJ_ELE -1
+#define NO_MAJ_ELE INT_MIN
 
 int majEle_recursive(int *nums, int size);
 int majEle_loop(int *nums, int size);
@@ -107,7 +108,7 @@ void swap(int* a, int* b)
 
 int majEle_loop(int* nums, int size)
 {
-    for (int i = 0, k = size / 2, count = 0; i < k; ++i)
+    for (int i = 0, k = size/2, count = 1; i <= k; ++i, count = 1)
     {
         for (int j = i + 1; j < size; ++j)
         {
