@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
+#include<string.h>
 #define ERROR -1
 #define SUCCESS 0
 #define ElementType char
@@ -12,6 +13,7 @@ typedef Node Stack;
 Stack makeEmpty();
 void push(ElementType element, Stack S);
 ElementType pop(Stack S);
+ElementType top(Stack S);
 int isEmpty(Stack S);
 void freeStack(Stack S);
 void changeToSuffixExpression(char *expression);
@@ -22,7 +24,7 @@ int main()
     char expression[20];
     scanf("%s", expression);
     changeToSuffixExpression(expression);
-    printf("%s\n", expression);
+    printf("The suffix expression is: %s\n", expression);
     system("pause");
     return 0;
 }
@@ -62,6 +64,13 @@ ElementType pop(Stack S)
     return ERROR;
 }
 
+ElementType top(Stack S)
+{
+    if (!isEmpty(S))
+        return S->next->data;
+    return ERROR;
+}
+
 int isEmpty(Stack S)
 {
     return S->next == NULL;
@@ -81,15 +90,56 @@ void freeStack(Stack S)
 void changeToSuffixExpression(char* expression)
 {
     int length = strlen(expression);
-    // remove excess space
+    Stack stack = makeEmpty();
+    int index = 0;
     for (int i = 0; i < length; ++i)
     {
-        if (expression[i] == ' ')
+        if (expression[i] >= '0' && expression[i] <= '9')
         {
-            for (int j = i; j < length; ++j)
-                expression[j] = expression[j+1];
-            --length;
+            expression[index] = expression[i];
+            ++index;
+            continue;
+        }
+        switch(expression[i])
+        {
+            case '+':
+            case '-':
+                while (!isEmpty(stack) && top(stack) != '(')
+                {
+                    expression[index] = pop(stack);
+                    ++index;
+                }
+                push(expression[i], stack);
+                break;
+
+            case '*':
+            case '/':
+                while (!isEmpty(stack) && (top(stack) == '*' || top(stack) == '/'))
+                {
+                    expression[index] = pop(stack);
+                    ++index;
+                }
+                push(expression[i], stack);
+                break;
+
+            case '(':
+                push(expression[i], stack);
+                break;
+
+            case ')':
+                while (!isEmpty(stack) && top(stack) != '(')
+                {
+                    expression[index] = pop(stack);
+                    ++index;
+                }
+                pop(stack);
+                break;
         }
     }
-
+    while (index < length)
+    {
+        expression[index] = pop(stack);
+        ++index;
+    }
+    freeStack(stack);
 }
