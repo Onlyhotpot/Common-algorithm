@@ -20,11 +20,21 @@ void changeToSuffixExpression(char *expression);
 
 int main()
 {
-    printf("Please input the arithmetic expression: ");
-    char expression[20];
-    scanf("%s", expression);
-    changeToSuffixExpression(expression);
-    printf("The suffix expression is: %s\n", expression);
+    while (1)
+    {
+        printf("Please input the arithmetic expression: ");
+        char expression[20];
+        scanf("%s", expression);
+        clock_t start, end;
+        start = clock();
+        for (int i = 0; i < 1; ++i)
+        {
+            changeToSuffixExpression(expression);
+        }
+        end = clock();
+        printf("The suffix expression is: %s\n", expression);
+        printf("Execution time was %lf seconds.\n", (long double)(1.0*(end - start)/CLOCKS_PER_SEC));
+    }
     system("pause");
     return 0;
 }

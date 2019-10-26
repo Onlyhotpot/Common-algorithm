@@ -14,11 +14,12 @@ int main()
         int res;
         clock_t start, end;
         start = clock();
-        for (int i = 0; i < 100000000; ++i)
+        for (int i = 0; i < 1000000; ++i)
             res = Josephus(n, m);
         end = clock();
         printf("The one who is alive is %d.\n", res);
-        printf("Execution time was %lf seconds.\n", (long double)(1.0*(end - start)/CLOCKS_PER_SEC));
+        printf("Execution time of 1000000 times was %lf seconds.\n",
+                (long double)(1.0*(end - start)/CLOCKS_PER_SEC));
     }
     system("pause");
     return 0;
@@ -26,18 +27,15 @@ int main()
 
 int Josephus(int n, int m)
 {
-    if (1 == m)
-        return n;
     int* link = (int*)malloc(n*sizeof(int));
     for (int i = 0; i < n; ++i)
         link[i] = (i + 1)%n;
-    int header = 0;
+    int header = n - 1;
     while (link[header] != header)
     {
-        for (int i = 1; i < m - 1; ++i)
+        for (int i = 1; i < m; ++i)
             header = link[header];
         link[header] = link[link[header]];
-        header = link[header];
     }
     free(link);
     return header + 1;
