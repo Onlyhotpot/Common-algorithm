@@ -1,14 +1,15 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 char text[] = "abcbabcaadabcabc" ;
 char pattern[] = "abcabc";
 int s[20];
 
-void get_SArray (char *p, int m)
+void get_SArray (char *p, int length)
 {
-    int i, j;
     s[0] = -1;
-    for (i = 0, j = -1; i < m; )
+    for (int  i = 0, j = -1; i < length; )
     {
         if (j == -1 || p[i] == p[j])
         {
@@ -20,10 +21,10 @@ void get_SArray (char *p, int m)
     }
 }
 
-int KMP (char *p, int m, char *t, int n)
+int KMP (char *p, int length_p, char *t, int length_t)
 {
     int i, j;
-    for (i = 0, j = 0; i < m && j < n;)
+    for (i = 0, j = 0; i < length_p && j < length_t;)
     {
         if (i == -1 || p[i] == t[j])
         {
@@ -31,7 +32,7 @@ int KMP (char *p, int m, char *t, int n)
         }
         else
             i = s[i];
-        if (i == m)
+        if (i == length_p)
             return (j - i);
     }
     return (-1);
@@ -39,16 +40,13 @@ int KMP (char *p, int m, char *t, int n)
 
 int main ()
 {
-    int n;
+    get_SArray (pattern, strlen(pattern));
 
-    get_SArray (pattern, 6);
-
-    for (n = 0; n < 6; n++)
-        printf ("s[%d] = %d ", n, s[n]);
-
+    for (int i = 0, length = strlen(pattern); i < length; i++)
+        printf ("s[%d] = %d ", i, s[i]);
     printf ("\n");
 
-    printf ("result is %d\n", KMP(pattern, 6, text, 16));
+    printf ("result is %d\n", KMP(pattern, strlen(pattern), text, strlen(text)));
 
     return (0);
 }
