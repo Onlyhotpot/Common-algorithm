@@ -4,6 +4,8 @@
 #include "tree.h"
 #include "queue.h"
 
+#define MAXSIZE 100
+
 void LevelOrderTraversal(Tree root);
 
 int main()
@@ -18,6 +20,8 @@ int main()
         insertNode(T, rand() % 10000);
     }
     preOrderTraversal(T);
+    printf("\n");
+    midOrderTraversal(T);
     printf("\n");
     LevelOrderTraversal(T);
     printf("\n");
@@ -34,14 +38,16 @@ void LevelOrderTraversal(Tree root)
     Queue Q;
     TreeNode T;
     if (!root) return;
-    Q = CreatQueue(100);
+    Q = CreatQueue(MAXSIZE);
     add(Q, root);
     while (!isEmpty(Q))
     {
         T = poll(Q);
         printf("%d ", T->val);
-        if (T->left) add(Q, root->left);
-        if (T->right) add(Q, root->right);
+        if (T->left)
+            add(Q, root->left);
+        if (T->right)
+            add(Q, root->right);
     }
     freeQueue(Q);
 }

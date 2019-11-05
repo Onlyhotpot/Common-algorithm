@@ -24,6 +24,7 @@ Position findMin(Tree T);
 void insertNode(Tree T, elementType element);
 void deleteNode(Tree T, elementType element);
 void preOrderTraversal(Tree T);
+void midOrderTraversal(Tree T);
 
 Tree initTree(elementType element)
 {
@@ -146,6 +147,14 @@ void preOrderTraversal(Tree T)
     if (!T) return;
     printf("%d ", T->val);
     preOrderTraversal(T->left);
+    preOrderTraversal(T->right);
+}
+
+void midOrderTraversal(Tree T)
+{
+    if (!T) return;
+    preOrderTraversal(T->left);
+    printf("%d ", T->val);
     preOrderTraversal(T->right);
 }
 
