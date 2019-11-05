@@ -2,6 +2,8 @@
 #include<stdlib.h>
 #include<time.h>
 #include<string.h>
+
+#define MAXSIZE 100
 #define ERROR -1
 #define SUCCESS 0
 #define ElementType char
@@ -23,7 +25,7 @@ int main()
     while (1)
     {
         printf("Please input the arithmetic expression: ");
-        char expression[20];
+        char expression[MAXSIZE];
         scanf("%s", expression);
         clock_t start, end;
         start = clock();
