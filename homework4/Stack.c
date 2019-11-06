@@ -1,32 +1,28 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<time.h>
-#include<string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+#include "Stack.h"
 
-#define MAXSIZE 100
-#define ERROR -1
-#define SUCCESS 0
-#define ElementType char
+#define true 1
+#define false 0
 
-struct node;
-typedef struct node* Node;
-typedef Node Stack;
-
-Stack makeEmpty();
-void push(ElementType element, Stack S);
-ElementType pop(Stack S);
-ElementType top(Stack S);
-int isEmpty(Stack S);
-void freeStack(Stack S);
+void CreateStrData();
 void changeToSuffixExpression(char *expression);
 
 int main()
 {
     while (1)
     {
-        printf("Please input the arithmetic expression: ");
-        char expression[MAXSIZE];
-        scanf("%s", expression);
+        printf("Please input the size you want of the expression: ");
+        int n;
+        scanf("%d", &n);
+        char* expression;
+        expression = (char*)malloc((2 * n ) * sizeof(char));
+        CreateStrData(expression, 2 * n - 1);
+        expression[2 * n - 1] = '\0';
+        printf("%s\n", expression);
+
         clock_t start, end;
         start = clock();
         for (int i = 0; i < 1; ++i)
@@ -34,6 +30,7 @@ int main()
             changeToSuffixExpression(expression);
         }
         end = clock();
+
         printf("The suffix expression is: %s\n", expression);
         printf("Execution time was %lf seconds.\n", (long double)(1.0*(end - start)/CLOCKS_PER_SEC));
     }
@@ -41,61 +38,33 @@ int main()
     return 0;
 }
 
-struct node
-{
-    ElementType data;
-    struct node *next;
-};
+void CreateStrData(char* theStr, int n) {
 
-Stack makeEmpty()
-{
-    Stack stack = (Stack)malloc(sizeof(struct node));
-    stack->next = NULL;
-    return stack;
-}
+    srand((unsigned)time(NULL));
 
-void push(ElementType element, Stack S)
-{
-    Node temp = (Stack)malloc(sizeof(struct node));
-    temp->data = element;
-    temp->next = S->next;
-    S->next = temp;
-}
+    int whetherAddNum = true;
+    int khNum = 1;
+    char fh[5] = {'+', '-', '*', '/'};
+    int tmod = 11;
 
-ElementType pop(Stack S)
-{
-    ElementType element;
-    if (!isEmpty(S))
-    {
-        Node temp = S->next;
-        S->next = temp->next;
-        element = temp->data;
-        free(temp);
-        return element;
-    }
-    return ERROR;
-}
-
-ElementType top(Stack S)
-{
-    if (!isEmpty(S))
-        return S->next->data;
-    return ERROR;
-}
-
-int isEmpty(Stack S)
-{
-    return S->next == NULL;
-}
-
-void freeStack(Stack S)
-{
-    Node temp = S;
-    while (S)
-    {
-        temp = S->next;
-        free(S);
-        S = temp;
+    for (int i = 0; i < n; i++) {
+        if (whetherAddNum) {
+            if (rand() % tmod == 0 && n - i > khNum) {
+                khNum++;
+                theStr[i] = '(';
+            } else {
+                theStr[i] = rand() % 26 + 'a';
+                whetherAddNum = false;
+            }
+        } else {
+            if (khNum > 1 && (rand() % tmod == 0 || n - i <= khNum)) {
+                khNum--;
+                theStr[i] = ')';
+                } else {
+                theStr[i] = fh[rand() % 4];
+                whetherAddNum = true;
+            }
+        }
     }
 }
 
@@ -106,7 +75,7 @@ void changeToSuffixExpression(char* expression)
     int index = 0;
     for (int i = 0; i < length; ++i)
     {
-        if (expression[i] >= '0' && expression[i] <= '9')
+        if (expression[i] >= 'a' && expression[i] <= 'z')
         {
             expression[index] = expression[i];
             ++index;

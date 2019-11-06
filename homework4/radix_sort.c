@@ -2,39 +2,103 @@
 #include <stdlib.h>
 #include <time.h>
 
-void radixSort(int* array, int length)；
+void radixSort(int* nums, int length, int radix);
 
 int main()
 {
     srand((unsigned)time(NULL));
+	printf("Please enter the number of digits you want to enter: ");
+	int length;
+	scanf("%d", &length);
 
-    // 生成随机测试列表 0-99
-    int test_list[20];
-    int test_list_length = sizeof(test_list) / sizeof(int);
-
-    printf("测试列表： \n");
-    for (int i = 0; i < test_list_length; i++)
+	// 生成数组
+	int* nums = (int*)malloc(length * sizeof(int));
+	for (int i = 0; i < length; ++i)
     {
-        test_list[i] = rand() % 100;
-        printf("%d ", test_list[i]);
+        nums[i] = rand() % 99;
+        printf("%d ", nums[i]);
     }
     printf("\n");
 
-    // 普通基数排序
-    radixSort(test_list, test_list_length);
-    printf("普通基数排序结果： \n");
-    for (int i = 0; i < test_list_length; i++)
-    {
-        printf("%d ", test_list[i]);
-    }
-    printf("\n");
+    printf("The radix you want to sorted by: ");
+    int radix;
+    scanf("%d", &radix);
 
-    system("pause");
-    return 0;
+    radixSort(nums, length, radix);
+
+	//打印出排序后的数组
+	printf("RadixSort:\n");
+	for (int i = 0; i < length; ++i)
+		printf("%d ", nums[i]);
+	printf("\n");
+
+	free(nums);
+	system("pause");
+	return 0;
 }
 
-void radixSort(int* array, int length)
+void radixSort(int* nums, int length, int radix)
 {
-    // 排序结果数组，用于存储每一次按为排序的临时结果
-    int *sortedArray = (int*)malloc(sizeof(int) * length);
+    int max = nums[0];
+    int min = nums[0];
+    for (int i = 1; i < length; ++i)
+    {
+        if (nums[i] > max)
+            max = nums[i];
+        if (nums[i] < min)
+            min = nums[i];
+    }
+
+    // 获取基数为radix的最大数字的长度
+    int max_size = 0;
+    for (int temp = max; temp > 0; temp /= radix)
+        ++max_size;
+
+    // 对每一位数进行稳定性计数排序
+    for (int cnt = 1; cnt <= max_size; ++cnt)
+    {
+        // 获取数组当前位数的值，储存在数组temp中
+        int* temp = (int*)malloc(length * sizeof(int));
+        for (int i = 0; i < length; ++i)
+        {
+            temp[i] = nums[i];
+            for (int j = 0; j < cnt; ++j)
+            {
+                temp[i] /= radix;
+            }
+            temp[i] %= radix;
+        }
+
+        // 初始化计数数组并初始化为0
+        int countArray[10] = {0};
+
+
+        // 进行基本的计数
+        for (int i = 0; i < length; ++i)
+        {
+            ++countArray[temp[i]];
+        }
+
+        // 对计数数组进行变形，后面元素等于前面元素之和
+        for (int i = 1; i < 10; ++i)
+        {
+            countArray[i] += countArray[i-1];
+        }
+
+        int *sortedArray = (int*)malloc(length * sizeof(int));
+        // 倒序遍历原数组，从计数数组中找到正确的位置，输出到结果数组
+        for (int i = length - 1; i >= 0; --i)
+        {
+            sortedArray[--countArray[temp[i]]] = nums[i];
+        }
+
+        // 将排序后的数组复制会原数组
+        for (int i = 0; i < length; ++i)
+        {
+            nums[i] = sortedArray[i];
+        }
+
+        free(temp);
+        free(sortedArray);
+    }
 }
