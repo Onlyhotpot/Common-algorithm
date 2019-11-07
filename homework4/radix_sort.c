@@ -7,32 +7,46 @@ void radixSort(int* nums, int length, int radix);
 int main()
 {
     srand((unsigned)time(NULL));
-	printf("Please enter the number of digits you want to enter: ");
-	int length;
-	scanf("%d", &length);
 
-	// 生成数组
-	int* nums = (int*)malloc(length * sizeof(int));
-	for (int i = 0; i < length; ++i)
+    while (1)
     {
-        nums[i] = rand() % 99;
-        printf("%d ", nums[i]);
+        printf("Please enter the number of digits you want to enter: ");
+        int length;
+        scanf("%d", &length);
+
+        // 生成数组
+        int* nums = (int*)malloc(length * sizeof(int));
+        for (int i = 0; i < length; ++i)
+        {
+            nums[i] = rand() % 100000;
+            //printf("%d ", nums[i]);
+        }
+        // printf("\n");
+
+        printf("The radix you want to sorted by: ");
+        int radix;
+        scanf("%d", &radix);
+
+        clock_t start, end;
+        start = clock();
+        for (int i = 0; i < 1000; ++i)
+        {
+            radixSort(nums, length, radix);
+        }
+        end = clock();
+
+        printf("Execution time was %.3lf seconds\n", (long double)1.0*(end - start) / CLOCKS_PER_SEC);
+        /*
+        //打印出排序后的数组
+        printf("RadixSort:\n");
+        for (int i = 0; i < length; ++i)
+            printf("%d ", nums[i]);
+        printf("\n");
+        */
+
+        free(nums);
     }
-    printf("\n");
 
-    printf("The radix you want to sorted by: ");
-    int radix;
-    scanf("%d", &radix);
-
-    radixSort(nums, length, radix);
-
-	//打印出排序后的数组
-	printf("RadixSort:\n");
-	for (int i = 0; i < length; ++i)
-		printf("%d ", nums[i]);
-	printf("\n");
-
-	free(nums);
 	system("pause");
 	return 0;
 }
@@ -40,13 +54,10 @@ int main()
 void radixSort(int* nums, int length, int radix)
 {
     int max = nums[0];
-    int min = nums[0];
     for (int i = 1; i < length; ++i)
     {
         if (nums[i] > max)
             max = nums[i];
-        if (nums[i] < min)
-            min = nums[i];
     }
 
     // 获取基数为radix的最大数字的长度
@@ -62,7 +73,7 @@ void radixSort(int* nums, int length, int radix)
         for (int i = 0; i < length; ++i)
         {
             temp[i] = nums[i];
-            for (int j = 0; j < cnt; ++j)
+            for (int j = 1; j < cnt; ++j)
             {
                 temp[i] /= radix;
             }
@@ -70,7 +81,9 @@ void radixSort(int* nums, int length, int radix)
         }
 
         // 初始化计数数组并初始化为0
-        int countArray[10] = {0};
+        int* countArray = (int*)malloc(radix * sizeof(int));
+        for (int i = 0; i < radix; ++i)
+            countArray[i] = 0;
 
 
         // 进行基本的计数
@@ -99,6 +112,7 @@ void radixSort(int* nums, int length, int radix)
         }
 
         free(temp);
+        free(countArray);
         free(sortedArray);
     }
 }

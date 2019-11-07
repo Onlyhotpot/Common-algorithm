@@ -7,23 +7,40 @@ void countSort(int* nums, int length);
 int main()
 {
     srand((unsigned)time(NULL));
-    printf("Please input the size of the array: ");
-    int length;
-    scanf("%d", &length);
-    int *nums = (int*)malloc(length * sizeof(int));
-    for (int i = 0; i < length; ++i)
+
+    while (1)
     {
-        nums[i] = rand() % 99;
-        printf("%d ", nums[i]);
+        printf("Please input the size of the array: ");
+        int length;
+        scanf("%d", &length);
+        int *nums = (int*)malloc(length * sizeof(int));
+        for (int i = 0; i < length; ++i)
+        {
+            nums[i] = rand() % 10000;
+            // printf("%d ", nums[i]);
+        }
+        // printf("\n");
+
+        clock_t start, end;
+        start = clock();
+        for (int i = 0; i < 10000; ++i)
+        {
+            countSort(nums, length);
+        }
+        end = clock();
+
+        printf("Execution time was %.3lf seconds\n", (long double)1.0*(end - start) / CLOCKS_PER_SEC);
+
+        /*
+        for (int i = 0; i < length; ++i)
+        {
+            printf("%d ", nums[i]);
+        }
+        printf("\n");
+        */
+
+        free(nums);
     }
-    printf("\n");
-    countSort(nums, length);
-    for (int i = 0; i < length; ++i)
-    {
-        printf("%d ", nums[i]);
-    }
-    printf("\n");
-    free(nums);
 
     system("pause");
     return 0;

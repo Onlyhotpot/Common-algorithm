@@ -25,6 +25,7 @@ void insertNode(Tree T, elementType element);
 void deleteNode(Tree T, elementType element);
 void preOrderTraversal(Tree T);
 void midOrderTraversal(Tree T);
+void postOrderTraversal(Tree T);
 
 Tree initTree(elementType element)
 {
@@ -69,7 +70,7 @@ void insertNode(Tree T, elementType element)
                 t->left = NULL;
                 t->right = NULL;
                 T->left = t;
-                break;
+                return;
             }
             T = T->left;
         }
@@ -82,7 +83,7 @@ void insertNode(Tree T, elementType element)
                 t->left = NULL;
                 t->right = NULL;
                 T->right = t;
-                break;
+                return;
             }
             T = T->right;
         }
@@ -153,9 +154,17 @@ void preOrderTraversal(Tree T)
 void midOrderTraversal(Tree T)
 {
     if (!T) return;
-    preOrderTraversal(T->left);
+    midOrderTraversal(T->left);
     printf("%d ", T->val);
-    preOrderTraversal(T->right);
+    midOrderTraversal(T->right);
+}
+
+void postOrderTraversal(Tree T)
+{
+    if (!T) return;
+    postOrderTraversal(T->left);
+    postOrderTraversal(T->right);
+    printf("%d ", T->val);
 }
 
 #endif

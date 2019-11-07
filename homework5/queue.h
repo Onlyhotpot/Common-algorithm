@@ -4,8 +4,6 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-#define elementType int
-
 struct queue;
 typedef struct queue* Queue;
 
