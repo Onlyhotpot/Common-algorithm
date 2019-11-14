@@ -26,6 +26,7 @@ void deleteNode(Tree T, elementType element);
 void preOrderTraversal(Tree T);
 void midOrderTraversal(Tree T);
 void postOrderTraversal(Tree T);
+void freeTree(Tree T);
 
 Tree initTree(elementType element)
 {
@@ -165,6 +166,15 @@ void postOrderTraversal(Tree T)
     postOrderTraversal(T->left);
     postOrderTraversal(T->right);
     printf("%d ", T->val);
+}
+
+void freeTree(Tree T)
+{
+    if (!T)
+        return;
+    freeTree(T->left);
+    freeTree(T->right);
+    free(T);
 }
 
 #endif

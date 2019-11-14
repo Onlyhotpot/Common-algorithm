@@ -17,8 +17,8 @@ struct queue
 };
 
 Queue CreatQueue(int maxSize);
-void add(Queue Q, TreeNode Node);
-TreeNode poll(Queue Q);
+void enqueue(Queue Q, TreeNode Node);
+TreeNode dequeue(Queue Q);
 TreeNode peek(Queue Q);
 int isEmpty(Queue Q);
 int isFull(Queue Q);
@@ -34,7 +34,7 @@ Queue CreatQueue(int maxSize)
     Q->length = 0;
 }
 
-void add(Queue Q, TreeNode Node)
+void enqueue(Queue Q, TreeNode Node)
 {
     if (!isFull(Q))
     {
@@ -44,7 +44,7 @@ void add(Queue Q, TreeNode Node)
     }
 }
 
-TreeNode poll(Queue Q)
+TreeNode dequeue(Queue Q)
 {
     if (!isEmpty(Q))
     {

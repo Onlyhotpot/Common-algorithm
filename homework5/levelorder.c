@@ -11,13 +11,13 @@ void LevelOrderTraversal(Tree root);
 int main()
 {
     srand((unsigned)time(NULL));
-    Tree T = initTree(5000);
+    Tree T = initTree(50000);
     printf("How many node do you want of the tree: ");
     int n;
     scanf("%d", &n);
     for (int i = 1; i < n; ++i)
     {
-        insertNode(T, rand() % 10000);
+        insertNode(T, rand() % 100000);
     }
 
     LevelOrderTraversal(T);
@@ -36,15 +36,15 @@ void LevelOrderTraversal(Tree root)
     Queue Q;
     TreeNode T;
     Q = CreatQueue(MAXSIZE);
-    add(Q, root);
+    enqueue(Q, root);
     while (!isEmpty(Q))
     {
-        T = poll(Q);
+        T = dequeue(Q);
         printf("%d ", T->val);
         if (T->left)
-            add(Q, T->left);
+            enqueue(Q, T->left);
         if (T->right)
-            add(Q, T->right);
+            enqueue(Q, T->right);
     }
     freeQueue(Q);
 }
