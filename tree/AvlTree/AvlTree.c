@@ -1,41 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-#ifndef AVLTREE_H
-#define AVLTREE_H
-
-#define false 0
-#define true 1
-#define Max(a, b) a > b ? a : b
-typedef int ElementType;
-typedef int bool;
-
-struct AvlNode;
-typedef struct AvlNode *Position;
-typedef struct AvlNode *AvlTree;
-
-AvlTree MakeEmpty(ElementType element);
-Position Find(ElementType element, AvlTree T);
-Position FindMin(AvlTree T);
-Position FindMax(AvlTree T);
-static int Height(Position P);
-static Position SingleRotateWithLeft(Position P);
-static Position SingleRotateWithRight(Position P);
-static Position DoubleRotateWithLeft(Position P);
-static Position DoubleRotateWithRight(Position P);
-AvlTree Insert(ElementType element, AvlTree T);
-AvlTree Delete(ElementType element, AvlTree T);
-ElementType Retrieve(Position P);
-void FreeTree(AvlTree T);
-
-struct AvlNode
-{
-    ElementType element;
-    AvlTree left;
-    AvlTree right;
-    int height;
-    bool isDeleted;
-};
+#include "AvlTree.h"
 
 AvlTree MakeEmpty(ElementType element)
 {
@@ -46,7 +11,6 @@ AvlTree MakeEmpty(ElementType element)
     T->height = 0;
     T->isDeleted = false;
 }
-
 
 Position Find(ElementType element, AvlTree T)
 {
@@ -190,6 +154,30 @@ ElementType Retrieve(Position P)
     return P->element;
 }
 
+void preOrderTraversal(AvlTree T)
+{
+    if (!T) return;
+    printf("%d ", T->element);
+    preOrderTraversal(T->left);
+    preOrderTraversal(T->right);
+}
+
+void midOrderTraversal(AvlTree T)
+{
+    if (!T) return;
+    midOrderTraversal(T->left);
+    printf("%d ", T->element);
+    midOrderTraversal(T->right);
+}
+
+void postOrderTraversal(AvlTree T)
+{
+    if (!T) return;
+    postOrderTraversal(T->left);
+    postOrderTraversal(T->right);
+    printf("%d ", T->element);
+}
+
 void FreeTree(AvlTree T)
 {
     if (!T)
@@ -198,5 +186,3 @@ void FreeTree(AvlTree T)
     FreeTree(T->right);
     free(T);
 }
-
-#endif // AVLTREE_H
